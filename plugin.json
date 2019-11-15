@@ -1,0 +1,12 @@
+{
+  "ID": "8e5cdc9a89ef4a7e887e138f1fc13115",
+  "ActionKeyword": "where",
+  "Name": "Where",
+  "Description": "Where",
+  "Author": "Wayne Custaf Laqinoa Ferdon",
+  "Version": "1.0.0",
+  "Language": "python",
+  "Website": "https://www.github.com/wayneferdon",
+  "IcoPath": "./Images/shellIcon.png",
+  "ExecuteFileName": "main.py"
+}
