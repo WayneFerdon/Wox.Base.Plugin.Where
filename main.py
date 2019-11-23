@@ -6,34 +6,41 @@ import win32con
 import win32clipboard
 
 
-class where(Wox):
-    @classmethod
-    def query(cls, queryString):
-        icon = './Images/shellIcon.png'
-        result = []
-        pathList = os.environ['path'].split(';')
-
+class regexList:
+    def __init__(self, queryString):
         queryStringLower = queryString.lower()
         queryList = queryStringLower.split()
-        regexList = []
+        self.regexList = list()
         for query in queryList:
             # pattern = '.*?'.join(query)
             # regexList.append(re.compile(pattern))
-            regexList.append(re.compile(query))
+            self.regexList.append(re.compile(query))
+
+    def match(self, item):
+        match = True
+        for regex in self.regexList:
+            match = regex.search(item) and match
+        return match
+
+
+class where(Wox):
+    @classmethod
+    def query(cls, queryString):
+        pathList = os.environ['path'].split(';')
+        regex = regexList(queryString)
+        icon = './Images/shellIcon.png'
+        result = list()
 
         for pathFolder in pathList:
             if os.path.isdir(pathFolder):
                 for file in os.scandir(pathFolder):
                     fileName = file.name
-                    match = True
-                    for regex in regexList:
-                        match = regex.search(fileName.lower()) and match
-                    if match:
+                    if regex.match(fileName.lower()):
                         filePath = os.path.join(pathFolder, fileName)
                         filePath = filePath.replace('\\', '/')
                         result.append(
                             {
-                                'Title': '[' + fileName + '] ' + filePath,
+                                'Title': '[ ' + fileName + ' ] ' + filePath,
                                 'SubTitle': 'Press Enter key to copy path',
                                 'IcoPath': icon,
                                 'JsonRPCAction': {
