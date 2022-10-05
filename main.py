@@ -1,64 +1,41 @@
+# ----------------------------------------------------------------
+# Author: wayneferdon wayneferdon@hotmail.com
+# Date: 2022-02-12 06:25:55
+# LastEditors: wayneferdon wayneferdon@hotmail.com
+# LastEditTime: 2022-10-05 18:17:19
+# FilePath: \Wox.Plugin.Where\main.py
+# ----------------------------------------------------------------
+# Copyright (c) 2022 by Wayne Ferdon Studio. All rights reserved.
+# Licensed to the .NET Foundation under one or more agreements.
+# The .NET Foundation licenses this file to you under the MIT license.
+# See the LICENSE file in the project root for more information.
+# ----------------------------------------------------------------
+
 # -*- coding: utf-8 -*-
 import os
-import re
-from wox import Wox, WoxAPI
-import win32con
-import win32clipboard
+from RegexList import *
+from WoxQuery import *
 
-
-class regexList:
-    def __init__(self, queryString):
-        queryStringLower = queryString.lower()
-        queryList = queryStringLower.split()
-        self.regexList = list()
-        for query in queryList:
-            # pattern = '.*?'.join(query)
-            # regexList.append(re.compile(pattern))
-            self.regexList.append(re.compile(query))
-
-    def match(self, item):
-        match = True
-        for regex in self.regexList:
-            match = regex.search(item) and match
-        return match
-
-
-class where(Wox):
-    @classmethod
-    def query(cls, queryString):
+class Where(WoxQuery):
+    def query(self, queryString):
         pathList = os.environ['path'].split(';')
-        regex = regexList(queryString)
+        regex = RegexList(queryString)
         icon = './Images/shellIcon.png'
-        result = list()
+        subTitle = 'Press Enter key to copy path'
+        results = list()
 
         for pathFolder in pathList:
-            if os.path.isdir(pathFolder):
-                for file in os.scandir(pathFolder):
-                    fileName = file.name
-                    if regex.match(fileName.lower()):
-                        filePath = os.path.join(pathFolder, fileName)
-                        filePath = filePath.replace('\\', '/')
-                        result.append(
-                            {
-                                'Title': '[ ' + fileName + ' ] ' + filePath,
-                                'SubTitle': 'Press Enter key to copy path',
-                                'IcoPath': icon,
-                                'JsonRPCAction': {
-                                    'method': 'copyData',
-                                    'parameters': [filePath],
-                                    "doNotHideAfterAction".replace('oNo', 'on'): False
-                                }
-                            }
-                        )
-        return result
-
-    @classmethod
-    def copyData(cls, data):
-        win32clipboard.OpenClipboard()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, data)
-        win32clipboard.CloseClipboard()
-
+            if not os.path.isdir(pathFolder):
+                continue
+            for file in os.scandir(pathFolder):
+                fileName = file.name
+                if not regex.match(fileName):
+                    continue
+                filePath = os.path.join(pathFolder, fileName)
+                filePath = filePath.replace('\\', '/')
+                title = '[ ' + fileName + ' ] ' + filePath
+                results.append(WoxResult(title,subTitle,icon,None,self.copyData.__name__,True,filePath).toDict())
+        return results
 
 if __name__ == '__main__':
-    where()
+    Where()
