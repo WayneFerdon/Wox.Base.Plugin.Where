@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------
 # Author: wayneferdon wayneferdon@hotmail.com
 # Date: 2022-02-12 06:25:55
-# LastEditors: wayneferdon wayneferdon@hotmail.com
-# LastEditTime: 2022-10-05 18:17:19
-# FilePath: \Wox.Plugin.Where\main.py
+# LastEditors: WayneFerdon wayneferdon@hotmail.com
+# LastEditTime: 2023-03-04 14:13:08
+# FilePath: \Flow.Launcher.Plugin.Where\main.py
 # ----------------------------------------------------------------
 # Copyright (c) 2022 by Wayne Ferdon Studio. All rights reserved.
 # Licensed to the .NET Foundation under one or more agreements.
@@ -14,9 +14,9 @@
 # -*- coding: utf-8 -*-
 import os
 from RegexList import *
-from WoxQuery import *
+from Query import *
 
-class Where(WoxQuery):
+class Where(Query):
     def query(self, queryString):
         pathList = os.environ['path'].split(';')
         regex = RegexList(queryString)
@@ -34,7 +34,7 @@ class Where(WoxQuery):
                 filePath = os.path.join(pathFolder, fileName)
                 filePath = filePath.replace('\\', '/')
                 title = '[ ' + fileName + ' ] ' + filePath
-                results.append(WoxResult(title,subTitle,icon,None,self.copyData.__name__,True,filePath).toDict())
+                results.append(QueryResult(title,subTitle,icon,None,self.copyData.__name__,True,filePath).toDict())
         return results
 
 if __name__ == '__main__':
