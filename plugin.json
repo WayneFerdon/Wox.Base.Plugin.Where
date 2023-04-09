@@ -2,7 +2,7 @@
   "ID": "5f925fa9-dbc8-4055-b174-bb325e2211ae",
   "ActionKeyword": "where",
   "Name": "Where",
-  "Description": "Where",
+  "Description": "Read and search system paths in Environment variables.",
   "Author": "Wayne Custaf Laqinoa Ferdon",
   "Version": "1.0.0",
   "Language": "python",
