@@ -18,6 +18,6 @@ Read and search system paths in Environment variables.
 
 1. Requirements
 
-   > [WoxPluginBase_Query](https://github.com/WayneFerdon/WoxPluginBase_Query/)
+   > [WoxBasePluginQuery](https://github.com/WayneFerdon/WoxBasePluginQuery/)
 
-2. Other Wox base launcher should be available too, see [WoxPluginBase_Query](https://github.com/WayneFerdon/WoxPluginBase_Query/)
+2. Other Wox base launcher should be available too, see [WoxBasePluginQuery](https://github.com/WayneFerdon/WoxBasePluginQuery/)
